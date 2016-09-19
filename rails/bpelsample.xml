@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+  name="ProcessOrder"
+  targetNamespace="http://enterprise.netbeans.org/bpel/ProcessOrder"
+  xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
+  xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor"
+  xmlns:tns="http://enterprise.netbeans.org/bpel/ProcessOrder"
+  xmlns:wns="http://j2ee.netbeans.org/wsdl/ProcessOrderService">
+
+  <import
+    namespace="http://j2ee.netbeans.org/wsdl/ProcessOrderService"
+    location="ProcessOrder.wsdl"
+    importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <import 
+    namespace="http://fastfood.vlantis.gr/branches/BranchService"
+    location="branches.wsdl"
+    importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <import 
+    namespace="http://fastfood.vlantis.gr/customers/CustomerService"
+    location="customers.wsdl"
+    importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <import 
+    namespace="http://fastfood.vlantis.gr/financial_events/FinancialEventService"
+    location="financial_events.wsdl"
+    importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <import 
+    namespace="http://fastfood.vlantis.gr/orders/OrderService"
+    location="orders.wsdl"
+    importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <import 
+    namespace="http://fastfood.vlantis.gr/order_items/OrderItemService"
+    location="order_items.wsdl"
+    importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <import 
+    namespace="http://fastfood.vlantis.gr/products/ProductService"
+    location="products.wsdl"
+    importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <import 
+    namespace="http://fastfood.vlantis.gr/product_categories/ProductCategoryService"
+    location="product_categories.wsdl"
+    importType="http://schemas.xmlsoap.org/wsdl/"/>
+</process>
+

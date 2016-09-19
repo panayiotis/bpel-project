@@ -1,0 +1,27 @@
+%h1 Listing financial_events
+
+%table
+  %thead
+    %tr
+      %th Branch
+      %th Customer
+      %th Type
+      %th Amount
+      %th
+      %th
+      %th
+
+  %tbody
+    - @financial_events.each do |financial_event|
+      %tr
+        %td= financial_event.branch
+        %td= financial_event.customer
+        %td= financial_event.type
+        %td= financial_event.amount
+        %td= link_to 'Show', financial_event
+        %td= link_to 'Edit', edit_financial_event_path(financial_event)
+        %td= link_to 'Destroy', financial_event, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Financial event', new_financial_event_path

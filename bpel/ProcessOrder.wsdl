@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+  name="ProcessOrderService"
+  targetNamespace="http://j2ee.netbeans.org/wsdl/ProcessOrderService"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:tns="http://j2ee.netbeans.org/wsdl/ProcessOrderService"
+  xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+  <types/>
+
+  <message name="BusinessProcessRequest">
+    <part name="id" type="xsd:integer"/>
+  </message>
+
+  <message name="BusinessProcessResponse">
+    <part name="message" type="xsd:string"/>
+  </message>
+
+  <portType name="ProcessOrderServicePortType">
+    <operation name="InvokeOperation">
+      <input name="input" message="tns:BusinessProcessRequest"/>
+      <output name="output" message="tns:BusinessProcessResponse"/>
+    </operation>
+  </portType>
+
+
+  <binding name="ProcessOrderServiceBinding" type="tns:ProcessOrderServicePortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <operation name="InvokeOperation">
+        <soap:operation/>
+          <input name="input">
+            <soap:body
+              use="literal"
+              namespace="http://j2ee.netbeans.org/wsdl/ProcessOrderService"/>
+          </input>
+          <output name="output">
+            <soap:body
+              use="literal"
+              namespace="http://j2ee.netbeans.org/wsdl/ProcessOrderService"/>
+          </output>
+      </operation>
+  </binding>
+
+  <service name="ProcessOrderService">
+    <port name="ProcessOrderServicePort" binding="tns:ProcessOrderServiceBinding">
+      <soap:address
+        location="http://localhost:8080/ode/processes/ProcessOrder"/>
+    </port>
+  </service>
+
+  <plnk:partnerLinkType name="ProcessOrderServicePartnerLinkType">
+    <plnk:role name="ProcessOrderServiceRole" portType="tns:ProcessOrderServicePortType"/>
+  </plnk:partnerLinkType>
+</definitions>
+
+
+

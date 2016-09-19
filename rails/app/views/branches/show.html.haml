@@ -1,0 +1,9 @@
+%p#notice= notice
+
+%p
+  %b Address:
+  = @branch.address
+
+= link_to 'Edit', edit_branch_path(@branch)
+\|
+= link_to 'Back', branches_path

@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Branch:
+  = @financial_event.branch
+%p
+  %b Customer:
+  = @financial_event.customer
+%p
+  %b Type:
+  = @financial_event.type
+%p
+  %b Amount:
+  = @financial_event.amount
+
+= link_to 'Edit', edit_financial_event_path(@financial_event)
+\|
+= link_to 'Back', financial_events_path

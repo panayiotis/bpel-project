@@ -1,0 +1,276 @@
+.report
+  .row
+    .column.firstpage
+      %h1.university ΕΘΝΙΚΟ ΚΑΙ ΚΑΠΟΔΙΣΤΡΙΑΚΟ ΠΑΝΕΠΙΣΤΗΜΙΟ ΑΘΗΝΩΝ
+      =image_tag("uoa.png", class: 'uoa-logo')
+      %h1.school ΣΧΟΛΗ ΘΕΤΙΚΩΝ ΕΠΙΣΤΗΜΩΝ
+      %h1.department ΤΜΗΜΑ ΠΛΗΡΟΦΟΡΙΚΗΣ ΚΑΙ ΤΗΛΕΠΙΚΟΙΝΩΝΙΩΝ
+      %h1.program ΠΡΟΓΡΑΜΜΑ ΜΕΤΑΠΤΥΧΙΑΚΩΝ ΣΠΟΥΔΩΝ
+      %h1.subject Εργασία
+      %h1.course Τεχνολογία Διοίκησης Επιχειρησιακών Διαδικασιών
+      %h1.name Παναγιώτης Βλαντής
+      %h1.email Μ1387 panosv@di.uoa.gr
+      %h1.date Αθήνα 19/09/2016
+  .page-break
+  .row
+    .column
+      .callout.primary
+        %h2 Note:
+        %p
+          This report is located in
+          %a{href: 'http://fastfood.vlantis.gr/report'}
+            fastfood.vlantis.gr/report
+          %br/
+          This pdf is created by printing the webpage.
+          For better readability read the report online.
+  .spacer-2
+  .row
+    .column
+      %h1 REST Application API
+      %p
+        To implement the REST API that provides the interface to the fastfood
+        online shop I used the
+        %a{href: 'http://rubyonrails.org'} Ruby on Rails
+        web application framework.
+        Other popular frameworks like Spring Nodejs or Django were considered
+        but when it comes to prototyping a REST API endpoint,
+        Rails is the right tool for the job. 
+  .row
+    .column
+      %h2 Database Models
+      %p
+        The database representation of the models required by the exercise's
+        objectives is straightforward.
+        In addition to the requested models, a FinancialEvent model has been
+        created to simulate the Bank endpoint. All the models have created_at
+        and updated_at attributes that can be of assistance when ordering by
+        creation time is needed. This is needed for example to return
+        a customer's orders sorted by creation date. 
+
+  .row
+    .column
+      %h2 REST Service WSDL
+
+      %p
+        For all the endpoints that need to be accessed by the
+        BPEL processes, concrete WSDL documents have to be provided.
+      %p
+        This means that one WSDL document
+        has to be provided for every resource of the application and in
+        each WSDL document bindings and services must use all the HTTP verbs
+        that BPEL can support, namely GET POST PUT DELETE.
+        PATCH is not supported by BPEL whereas it is provided by Rails
+        but that does not affect the business process implementation.
+      %p
+        During the creation of the WSDLs I notices that in a strict restful
+        application the WSDLs can easily be generated dynamically.
+        Strict restful, is an application that only its resources are exposed
+        as endpoints.
+        For example a cart can be an endpoint but add_to_cart or process_cart
+        can not since they do not represent resources but actions to 
+        a resource.
+        
+        %br/
+        There are several advantages to following the strict restfull
+        approach:
+      %ol
+        %li
+          When the developer creates a new db backed model, it will have a
+          WSDL document out of the box.
+        %li  
+          Since all WSDL for all models are created from a single template,
+          the business process developer needs to read only one WSDL document
+          to get the idea about what bindings and services are provided from
+          the application.
+        %li
+          Another great advantage of the strict restful approach in a rails
+          application is that a hierarchy of WSDL documents is supported.
+          This means that if the developer can override
+          the default WSDL by creating a custom WSDL in a directory in
+          a higher hierarchy.
+        %li
+          The final advantage is that it simplifies greatly the creation of 
+          the BPEL process. By leveraging the import statement, the
+          developer of the business process can import all the
+          WSDL documents of the application that includes messages and
+          partner link types.
+          Also a sample BPEL xml is dynamically generated at:
+          %a{href: 'http://fastfood.vlantis.gr/bpel.xml'}
+            fastfood.vlantis.gr/bpel.xml
+      %pre
+        %code.xml #{File.read('bpelsample.xml')}
+  
+  .page-break
+  .row
+    .column.no-page-break
+      %h2 Entity / Relation diagram
+      =image_tag("graph.svg",class: 'ar')
+  
+  .page-break
+  .row
+    .column
+      %h1 BPEL Business Process 
+      %h2 Problems with Netbeans
+      %p
+        Netbeans 6 has major incompatibilities with linux
+        windowing and graphics systems and this prohibits it from 
+        working properly.
+        Specifically the mouse clicks where not focused at the mouse
+        cursor but at a random area within
+        4cm radius south-east from the mouse cursor.
+        %br/
+        It seems that this was a well-known bug at the Netbeans community that
+        got fixed later (at release 201303222300)
+        but never backported to previous Netbeans releases:
+        %ul
+          %li
+            %a{href:'https://netbeans.org/bugzilla/show_bug.cgi?id=227754'}
+              Bug: 227754
+          %li
+            %a{href:'https://netbeans.org/bugzilla/show_bug.cgi?id=198639'}
+              Bug: 198639
+          %li
+            %a{href:'https://netbeans.org/bugzilla/show_bug.cgi?id=197922'}
+              Bug: 197922
+          %li
+            %a{href:'https://netbeans.org/bugzilla/show_bug.cgi?id=198817'}
+              Bug: 198817
+        
+        The impaired usability of the mouse was a major problem only in
+        the Drag 'n' Drop creation of the BPEL file.
+        I could still use
+        Netbeans to validate the BPEL file which I created by hand
+        and the dynamically created WSDL files of the REST application. 
+      %p
+        %span.bold Update:
+        After the deadline of the exercise I noticed that 
+        Netbeans suffers the mentioned above behaviour only when the window
+        touches one or more sides of the screen.
+        So I was able the previous days to create one Business Process.
+        
+      %p
+        Nevertheless it was the unusability of Netbeans that lead me,
+        after studying the WSDL and BPEL (with rest extensions) specifications
+        to focus more in the WSDLs than the BPEL file.
+        Netbeans and other tools can generate WSDLs too but
+        the web framework and the programmer have much more knowledge about
+        the application's internals so the generated WSDLs could be better.
+        
+      
+      %h2 ProcessOrder Business Process
+      %p
+        I could not create the process as described in the objectives of
+        the exercise but I created a business process that does the
+        following:
+      %h3 Step 1. Provides an interface for SOAP requests
+      %p
+        The WSDL can be be accessed from
+        %a{href: 'http://fastfood.vlantis.gr:8080/ode/processes/ProcessOrder?wsdl'}
+          fastfood.vlantis.gr:8080/ode/processes/ProcessOrder?wsdl
+      %p
+        The process waits for Soap requests on
+        %a{href: 'http://fastfood.vlantis.gr:8080/ode/processes/ProcessOrder'}
+          fastfood.vlantis.gr:8080/ode/processes/ProcessOrder
+        %br/
+      %p 
+        An example xml request can be:
+        %pre
+          %code.ruby #{File.read('request.xml')}
+      %p 
+        To invoke the bpel process from linux command line run:
+        %pre
+          %code.ruby #{File.read('request.sh')}
+      %p  
+        The response to the above request is:
+        %pre
+          %code.ruby #{File.read('response.xml')}
+      %h3 Step 2. Invoke Rails and get an order
+      %p
+        To get an order perform a get request on:
+        %a{href: 'http://fastfood.vlantis.gr/orders/1.xml'}
+          fastfood.vlantis.gr/orders/1.xml
+        The order contains an element from with the branch address
+        and an element to with the shipping address.
+        You can visit the above link to see the document.
+      %h3 Step 3. Invoke Rails and get the collection of all branches
+      %p
+        To get the collection of all branches perform a get request on:
+        %a{href: 'http://fastfood.vlantis.gr/branches.xml'}
+          fastfood.vlantis.gr/branches.xml
+        This is used to provide information about the total branches it
+        the Business Process's final response.
+        You can visit the above link to see the document.
+      %h3
+        Step 4. Invoke Google Distance API  
+      %p
+        Google Distance API is used to get the distance between
+        the branch and the shipping address and return this info
+        in the Business Process's final response.
+        The request is similar to the following one:
+        - u = 'https://maps.googleapis.com/maps/api/distancematrix/xml' +
+        - '?destinations=Piraeus&origins=Thessaloniki'
+        %a{href: u }
+          = u.gsub('https://', '')
+      %h3 Step 5. Construct the response message
+      %p
+        A typical response message to a request is:
+        %pre
+          %code.xml 
+            <message>
+            There are 3 branches in total.
+            Distance from Thessaloniki to Piraeus is 509 km
+            and it takes 5 hours 0 mins to ship.
+            </message>
+        This message is constructed by counting the total branches
+        that step 3 returned, the from and to addresses that 
+        step 2 returned and distance and travel time that were
+        returned from step 4. The above parts were concatenated to create
+        the final message.
+      %h3 Step 6. Reply  
+      %p
+        The final step is to reply to the caller of the Business Process
+        A full xml response is: 
+        %pre
+          %code.ruby #{File.read('response.xml')}
+      
+  .page-break
+  .row
+    .column.no-page-break
+      %h2 Business Process Diagram
+      =image_tag("bpel.png",class: 'ar')
+     
+  .row
+    .column
+      %h1 Services Deployment
+      %p
+        %span.italic
+          Deploying the implemented services to a platform of our choice
+        was one of the objectives of this exercise.
+        After studying the course's lectures and slides
+        I notice that the
+        %a{href: 'https://www.chef.io/'} Chef
+        infrastructure automation tool, is indeed an
+        %span.italic Activity-Oriented
+        business process tool. In activity-oriented models we have resources
+        roles control flow and activities. In Chef resources can be
+        files users and executables. Activities are called recipes in chef
+        terminology and are composed of actions on resources. For example
+        a file resource can be copied to a machine, a system service resource
+        can be started and an executable resource can be created. Roles in
+        chef, like activity-oriented models are composed of activities. 
+      %p
+        I deployed the implemented services in
+        %a{href: 'https://okeanos.grnet.gr'} Okeanos,
+        GRNET's cloud service, for the Greek Research and Academic Community.
+        After installing a linux operating system on the virtual machine
+        the only thing to do to deploy the services in a Business Process oriented
+        way, is run the chef client passing
+        the role of the machine as.
+  .page-break
+  .row
+    .column
+      %p
+        This is a sample of the activity code that is used to deploy the
+        services
+      %pre
+        %code.ruby #{File.read('sample.rb')}

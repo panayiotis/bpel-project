@@ -1,0 +1,56 @@
+.bold{
+  font-weight: bold;
+}
+
+.italic {
+  font-style: italic;
+}
+.center{
+  text-align: center;
+}
+
+
+@for $i from 1 through 10 {
+  .spacer-#{$i}{
+    margin-bottom: #{$i}rem;
+  }
+}
+
+.report {
+  .firstpage {
+        text-align: center;
+
+    .university { font-size: 1.2em; }
+    .uoa-logo { height: 200px; }
+    .school { font-size: 1.2em; }
+    .department { font-size: 1.2em; }
+    .program { font-size: 1.2em; }
+    .subject { font-size: 2em; margin-top: 2em; }
+    .course { font-size: 2em; margin-top: 1em; }
+    .name { font-size: 1.5em; margin-top: 2em; }
+    .email { font-size: 1.2em; }
+    .date { font-size: 1.2em; margin: 7em 0em; }
+  }
+  .ar{
+    max-width: 90%;
+    max-height: 90%;
+  }
+  
+  li,p { text-align: justify; }
+
+}
+
+@media print {
+  @page {
+      size: letter portrait;
+      margin: 12%;
+  }
+  .report {
+    .firstpage {
+      page-break-after: always; 
+    }
+  }
+  .no-page-break { page-break-inside : avoid; }
+  .page-break { page-break-after : always; }
+  pre code {font-size: .7em;}
+}

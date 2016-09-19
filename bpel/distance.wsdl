@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+  name="DistanceService"
+  targetNamespace="http://maps.googleapis.com/maps/api/distancematrix"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:tns="http://maps.googleapis.com/maps/api/distancematrix"
+  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+  xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype">
+
+
+  <types>
+    <xsd:schema>
+      <xsd:import
+        namespace="http://maps.googleapis.com/maps/api/distancematrix"
+        schemaLocation="distance.xsd"/>
+    </xsd:schema>
+  </types>
+
+  <message name="DistanceRequest">
+    <part name="origins" type="xsd:string"/>
+    <part name="destinations" type="xsd:string"/>
+  </message>
+
+  <message name="DistanceResponse">
+    <part name="DistanceMatrixResponse" type="tns:DistanceMatrixResponse"/>
+  </message>
+
+  <!--
+    GET  orders/:id
+  -->
+
+  <portType name="DistanceServiceGetPortType">
+    <operation name="getDistance">
+      <input name="input" message="tns:DistanceRequest"/>
+      <output name="output" message="tns:DistanceResponse"/>
+    </operation>
+  </portType>
+
+  <binding
+    name="DistanceServiceGetHttp"
+    type="tns:DistanceServiceGetPortType">
+
+    <http:binding verb="GET"/>
+    <operation name="getDistance">
+      <http:operation location="/maps/api/distancematrix/xml"/>
+      <input name="input">
+        <http:urlEncoded/>
+      </input>
+      <output name="output">
+        <mime:content part="DistanceMatrixResponse" type="text/xml"/>
+      </output>
+    </operation>
+  </binding>
+
+  <service name="GoogleDistanceGet">
+    <port
+      name="GoogleDistanceServiceGetHttp"
+      binding="tns:DistanceServiceGetHttp">
+      <http:address location="http://maps.googleapis.com"/>
+    </port>
+  </service>
+
+  <plnk:partnerLinkType name="GoogleDistanceServiceGet">
+    <plnk:role
+      name="DistanceServiceGetRole"
+      portType="tns:DistanceServiceGetPortType"/>
+  </plnk:partnerLinkType>
+
+</definitions>
+
+
+

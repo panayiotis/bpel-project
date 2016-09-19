@@ -1,0 +1,13 @@
+<soapenv:Envelope
+  xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <odens:InvokeOperationResponse
+      xmlns:odens="http://j2ee.netbeans.org/wsdl/ProcessOrderService">
+      <message>
+      There are 3 branches in total.
+      Distance from Thessaloniki to Piraeus is 509 km
+      and it takes 5 hours 0 mins to ship.
+      </message>
+    </odens:InvokeOperationResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

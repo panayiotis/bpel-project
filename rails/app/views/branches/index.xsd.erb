@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<%
+controller_name = controller.controller_name
+endpoint = "#{request.protocol}#{request.host_with_port}/#{controller.controller_name}"
+namespace = "#{endpoint}.xsd" 
+%>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified"
+  targetNamespace="<%= namespace %>"
+  xmlns:tns="<%= namespace %>">
+
+  <xs:complexType name="<%= controller_name.classify.downcase %>">
+    <xs:sequence>
+      <xs:element type="xs:int" name="id"/>
+      <xs:element type="xs:string" name="address"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="<%= controller_name %>">
+    <xs:sequence>
+      <xs:element
+        name="branch"
+        maxOccurs="unbounded"
+        minOccurs="0"
+        type="tns:<%= controller_name.classify.downcase %>">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

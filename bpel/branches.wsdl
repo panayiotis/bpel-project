@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions
+  name="BranchService"
+  targetNamespace="http://localhost:3000/branches/BranchService"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:tns="http://localhost:3000/branches/BranchService"
+  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+  xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+  xmlns:nsxsd="http://localhost:3000/branches.xsd">
+
+  <types>
+    <xsd:schema>
+      <xsd:import
+        namespace="http://localhost:3000/branches.xsd"
+        schemaLocation="branches.xsd"/>
+    </xsd:schema>
+  </types>
+  
+  <!--
+    GET branches/
+  -->
+  
+  <message name="IndexBranchRequest">
+    <part name="empty" type="xsd:string"/>
+  </message>
+
+  <message name="IndexBranchResponse">
+    <part name="branches" type="nsxsd:branches"/>
+  </message>
+  
+  <portType name="BranchServiceIndexPortType">
+    <operation name="IndexOperation">
+      <input name="input" message="tns:IndexBranchRequest"/>
+      <output name="output" message="tns:IndexBranchResponse"/>
+    </operation>
+  </portType>
+
+  <binding
+    name="BranchServiceIndexBinding"
+    type="tns:BranchServiceIndexPortType">
+
+    <http:binding verb="GET"/>
+    <operation name="IndexOperation">
+      <http:operation location="/"/>
+      <input name="input">
+        <http:urlReplacement/>
+      </input>
+      <output name="output">
+        <mime:content part="branches" type="text/xml"/>
+      </output>
+    </operation>
+  </binding>
+
+  <!--
+    GET  branches/:id
+  -->
+
+  <message name="GetBranchRequest">
+    <part name="id" type="xsd:integer"/>
+  </message>
+
+  <message name="GetBranchResponse">
+    <part name="branch" type="nsxsd:branch"/>
+  </message>
+
+  <portType name="BranchServiceGetPortType">
+    <operation name="GetOperation">
+      <input name="input" message="tns:GetBranchRequest"/>
+      <output name="output" message="tns:GetBranchResponse"/>
+    </operation>
+  </portType>
+
+  <binding
+    name="BranchServiceGetBinding"
+    type="tns:BranchServiceGetPortType">
+
+    <http:binding verb="GET"/>
+    <operation name="GetOperation">
+      <http:operation location="{id}.xml"/>
+      <input name="input">
+        <http:urlReplacement/>
+      </input>
+      <output name="output">
+        <mime:content part="branch" type="text/xml"/>
+      </output>
+    </operation>
+  </binding>
+
+  <service name="BranchService">
+    <!-- index -->
+    <port
+      name="BranchServiceIndexPort"
+      binding="tns:BranchServiceIndexBinding">
+      <http:address location="http://localhost:3000/branches.xml"/>
+    </port>
+    
+    <!-- get  -->
+    <port
+      name="BranchServiceGetPort"
+      binding="tns:BranchServiceGetBinding">
+      <http:address location="http://localhost:3000/branches"/>
+    </port>
+  </service>
+  
+  <plnk:partnerLinkType name="BranchServiceIndexPartnerLinkType">
+    <plnk:role
+      name="BranchServiceIndexRole"
+      portType="tns:BranchServiceIndexPortType"/>
+  </plnk:partnerLinkType>  
+    
+  <plnk:partnerLinkType name="BranchServiceGetPartnerLinkType">
+    <plnk:role
+      name="BranchServiceGetRole"
+      portType="tns:BranchServiceGetPortType"/>
+  </plnk:partnerLinkType>
+
+</definitions>

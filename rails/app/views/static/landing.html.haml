@@ -1,0 +1,25 @@
+.row
+  .large-12.columns
+    %h1 Welcome
+    %p
+      This is the Ruby on Rails app.
+      %br/
+      Read the
+      %a{href: '/report'} Report.
+      
+    %h2 Information
+
+    %h3 DOT E/R diagram 
+    =image_tag("graph.svg")
+    
+    %h3 Test    
+    %p To invoke the bpel process from linux command line run:
+    %pre
+      %code.ruby #{File.read('request.sh')}   
+    
+    %h3 Routes
+    %pre
+      = preserve do
+        =File.read('routes.txt')
+    
+

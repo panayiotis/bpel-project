@@ -1,0 +1,1 @@
+json.partial! "financial_events/financial_event", financial_event: @financial_event

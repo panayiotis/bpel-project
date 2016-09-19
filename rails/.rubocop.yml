@@ -1,0 +1,219 @@
+require:
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 2.3
+  # RuboCop has a bunch of cops enabled by default. This setting tells RuboCop
+  # to ignore them, so only the ones explicitly set in this file are enabled.
+  DisabledByDefault: true
+  Exclude:
+    - '**/templates/**/*'
+    - '**/vendor/**/*'
+
+# Prefer &&/|| over and/or.
+Style/AndOr:
+  Enabled: true
+
+# Do not use braces for hash literals when they are the last argument of a
+# method call.
+Style/BracesAroundHashParameters:
+  Enabled: true
+
+# Align `when` with `case`.
+Style/CaseIndentation:
+  Enabled: true
+
+# No extra empty lines.
+Style/EmptyLines:
+  Enabled: true
+
+# In a regular class definition, no empty lines around the body.
+Style/EmptyLinesAroundClassBody:
+  Enabled: true
+
+# In a regular module definition, no empty lines around the body.
+Style/EmptyLinesAroundModuleBody:
+  Enabled: true
+
+# Use Ruby >= 1.9 syntax for hashes. Prefer { a: :b } over { :a => :b }.
+Style/HashSyntax:
+  Enabled: true
+
+# Method definitions after `private` or `protected` isolated calls need one
+# extra level of indentation.
+Style/IndentationConsistency:
+  Enabled: true
+  EnforcedStyle: rails
+
+# Two spaces, no tabs (for indentation).
+Style/IndentationWidth:
+  Enabled: true
+
+# Defining a method with parameters needs parentheses.
+Style/MethodDefParentheses:
+  Enabled: true
+
+# Use `foo {}` not `foo{}`.
+Style/SpaceBeforeBlockBraces:
+  Enabled: true
+
+# Use `foo { bar }` not `foo {bar}`.
+Style/SpaceInsideBlockBraces:
+  Enabled: true
+
+# Use `{ a: 1 }` not `{a:1}`.
+Style/SpaceInsideHashLiteralBraces:
+  Enabled: true
+
+# Check quotes usage according to lint rule below.
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes
+
+# Detect hard tabs, no hard tabs.
+Style/Tab:
+  Enabled: true
+
+# Blank lines should not have any spaces.
+Style/TrailingBlankLines:
+  Enabled: true
+
+# No trailing whitespace.
+Style/TrailingWhitespace:
+  Enabled: true
+
+# Use quotes for string literals when they are enough.
+Style/UnneededPercentQ:
+  Enabled: true
+
+# Align `end` with the matching keyword or starting expression except for
+# assignments, where it should be aligned with the LHS.
+Lint/EndAlignment:
+  Enabled: true
+  AlignWith: variable
+
+# Use my_method(my_arg) not my_method( my_arg ) or my_method my_arg.
+Lint/RequireParentheses:
+  Enabled: true
+
+##
+## Rails https://github.com/gitlabhq/gitlabhq/blob/master/.rubocop.yml
+##
+
+# Enables Rails cops.
+Rails:
+  Enabled: true
+
+# Enforces consistent use of action filter methods.
+Rails/ActionFilter:
+  Enabled: true
+  EnforcedStyle: action
+
+# Checks the correct usage of date aware methods, such as `Date.today`,
+# `Date.current`, etc.
+Rails/Date:
+  Enabled: false
+
+# Prefer delegate method for delegations.
+Rails/Delegate:
+  Enabled: false
+
+# Prefer `find_by` over `where.first`.
+Rails/FindBy:
+  Enabled: true
+
+# Prefer `all.find_each` over `all.find`.
+Rails/FindEach:
+  Enabled: true
+
+# Prefer has_many :through to has_and_belongs_to_many.
+Rails/HasAndBelongsToMany:
+  Enabled: true
+
+# Checks for calls to puts, print, etc.
+Rails/Output:
+  Enabled: true
+
+# Checks for incorrect grammar when using methods like `3.day.ago`.
+Rails/PluralizationGrammar:
+  Enabled: true
+
+# Checks for `read_attribute(:attr)` and `write_attribute(:attr, val)`.
+Rails/ReadWriteAttribute:
+  Enabled: false
+
+# Checks the arguments of ActiveRecord scopes.
+Rails/ScopeArgs:
+  Enabled: true
+
+##
+## RSpec
+##
+
+# Check that instances are not being stubbed globally.
+RSpec/AnyInstance:
+  Enabled: false
+
+# Check that the first argument to the top level describe is the tested class or
+# module.
+RSpec/DescribeClass:
+  Enabled: false
+
+# Use `described_class` for tested class / module.
+RSpec/DescribeMethod:
+  Enabled: false
+
+# Checks that the second argument to top level describe is the tested method
+# name.
+RSpec/DescribedClass:
+  Enabled: false
+
+# Checks for long example.
+RSpec/ExampleLength:
+  Enabled: false
+  Max: 5
+
+# Do not use should when describing your tests.
+RSpec/ExampleWording:
+  Enabled: false
+  CustomTransform:
+    be: is
+    have: has
+    not: does not
+  IgnoredWords: []
+
+# Checks the file and folder naming of the spec file.
+RSpec/FilePath:
+  Enabled: false
+  CustomTransform:
+    RuboCop: rubocop
+    RSpec: rspec
+
+# Checks if there are focused specs.
+RSpec/Focus:
+  Enabled: true
+
+# Checks for the usage of instance variables.
+RSpec/InstanceVariable:
+  Enabled: false
+
+# Checks for multiple top-level describes.
+RSpec/MultipleDescribes:
+  Enabled: false
+
+# Enforces the usage of the same method on all negative message expectations.
+RSpec/NotToNot:
+  EnforcedStyle: not_to
+  Enabled: true
+
+# Prefer using verifying doubles over normal doubles.
+RSpec/VerifiedDoubles:
+  Enabled: false
+  
+##
+##
+##
+
+# Limit lines to 80 characters.
+Metrics/LineLength:
+  Enabled: true

@@ -1,0 +1,1 @@
+json.array! @financial_events, partial: 'financial_events/financial_event', as: :financial_event

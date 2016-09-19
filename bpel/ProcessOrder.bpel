@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process
+  name="ProcessOrder"
+  targetNamespace="http://enterprise.netbeans.org/bpel/ProcessOrder"
+  xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
+  xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor"
+  xmlns:tns="http://enterprise.netbeans.org/bpel/ProcessOrder"
+  xmlns:wns="http://j2ee.netbeans.org/wsdl/ProcessOrderService">
+
+  <import
+    namespace="http://j2ee.netbeans.org/wsdl/ProcessOrderService"
+    location="ProcessOrder.wsdl"
+    importType="http://schemas.xmlsoap.org/wsdl/"/>
+
+  <import
+    namespace="http://localhost:3000/orders/OrderService"
+    location="orders.wsdl"
+    importType="http://schemas.xmlsoap.org/wsdl/"/>
+
+  <import
+    namespace="http://localhost:3000/branches/BranchService"
+    location="branches.wsdl"
+    importType="http://schemas.xmlsoap.org/wsdl/"/>
+
+  <import
+    namespace="http://maps.googleapis.com/maps/api/distancematrix"
+    location="distance.wsdl"
+    importType="http://schemas.xmlsoap.org/wsdl/"/>
+
+  <partnerLinks>
+    <partnerLink
+      name="GoogleDistancePartnerLink"
+      xmlns:tns="http://maps.googleapis.com/maps/api/distancematrix"
+      partnerLinkType="tns:GoogleDistanceServiceGet"
+      partnerRole="DistanceServiceGetRole"/>
+
+    <partnerLink
+      name="OrderServiceGetPartnerLink"
+      xmlns:tns="http://localhost:3000/orders/OrderService"
+      partnerLinkType="tns:OrderServiceGetPartnerLinkType"
+      partnerRole="OrderServiceGetRole"/>
+
+    <partnerLink
+      name="BranchServiceIndexPartnerLink"
+      xmlns:tns="http://localhost:3000/branches/BranchService"
+      partnerLinkType="tns:BranchServiceIndexPartnerLinkType"
+      partnerRole="BranchServiceIndexRole"/>
+    <partnerLink
+      name="PartnerLink1"
+      partnerLinkType="wns:ProcessOrderServicePartnerLinkType"
+      myRole="ProcessOrderServiceRole"/>
+  </partnerLinks>
+
+  <variables>
+    <variable name="DistanceResponse" xmlns:tns="http://maps.googleapis.com/maps/api/distancematrix" messageType="tns:DistanceResponse"/>
+    <variable name="GetBranchRequest" xmlns:tns="http://localhost:3000/branches/BranchService" messageType="tns:IndexBranchRequest"/>
+    <variable name="IndexBranches" xmlns:tns="http://localhost:3000/branches/BranchService" messageType="tns:IndexBranchResponse"/>
+    <variable name="showResponse" xmlns:tns="http://localhost:3000/orders/OrderService" messageType="tns:GetOrderResponse"/>
+    <variable name="showRequest" xmlns:tns="http://localhost:3000/orders/OrderService" messageType="tns:GetOrderRequest"/>
+    <variable name="MessageVar" messageType="wns:BusinessProcessResponse"/>
+    <variable name="NameVar" messageType="wns:BusinessProcessRequest"/>
+    <variable name="DistanceRequest" xmlns:tns="http://maps.googleapis.com/maps/api/distancematrix" messageType="tns:DistanceRequest"/>
+  </variables>
+
+  <sequence>
+    <receive name="ReceiveName" createInstance="yes" partnerLink="PartnerLink1" operation="InvokeOperation" portType="wns:ProcessOrderServicePortType" variable="NameVar"/>
+    <assign name="AssignOrderID">
+      <copy>
+        <from variable="NameVar" part="id"></from>
+        <to variable="showRequest" part="id"/>
+      </copy>
+      <copy>
+        <from>''</from>
+        <to>$GetBranchRequest.empty</to>
+      </copy>
+    </assign>
+    <invoke name="InvokeRailsOrders"   partnerLink="OrderServiceGetPartnerLink" operation="GetOperation"   xmlns:tns="http://localhost:3000/orders/OrderService"    portType="tns:OrderServiceGetPortType"    inputVariable="showRequest" outputVariable="showResponse"/>
+    <invoke name="InvokeRailsBranches" partnerLink="BranchServiceIndexPartnerLink" operation="IndexOperation" xmlns:tns="http://localhost:3000/branches/BranchService" portType="tns:BranchServiceIndexPortType" inputVariable="GetBranchRequest" outputVariable="IndexBranches"/>
+    <assign name="AssignDistanceRequest">
+      <copy>
+        <from>$showResponse.order/from</from>
+        <to variable="DistanceRequest" part="origins"/>
+      </copy>
+      <copy>
+        <from>$showResponse.order/to</from>
+        <to variable="DistanceRequest" part="destinations"/>
+      </copy>
+    </assign>
+    <invoke name="InvokeGoogleDistance" partnerLink="GoogleDistancePartnerLink" operation="getDistance" xmlns:tns="http://maps.googleapis.com/maps/api/distancematrix"  portType="tns:DistanceServiceGetPortType" inputVariable="DistanceRequest" outputVariable="DistanceResponse"/>
+    <assign name="AssignOutputMessage">
+      <copy>
+        <from>concat('There are ', count($IndexBranches.branches/branch), ' branches in total. ', 'Distance from ', $showResponse.order/from, ' to ', $showResponse.order/to, ' is ', $DistanceResponse.DistanceMatrixResponse/row/element/distance/text, ' and it takes ', $DistanceResponse.DistanceMatrixResponse/row/element/duration/text, ' to ship.')</from>
+        <to variable="MessageVar" part="message"/>
+      </copy>
+    </assign>
+    <reply
+      name="ReplyMewssage"
+      partnerLink="PartnerLink1"
+      operation="InvokeOperation"
+      portType="wns:ProcessOrderServicePortType"
+      variable="MessageVar"/>
+  </sequence>
+</process>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

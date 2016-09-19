@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<%
+name = controller.controller_name.classify
+controller_name = controller.controller_name
+xsd = "#{controller.controller_name}.xsd"
+endpoint = "#{request.protocol}#{request.host_with_port}/#{controller.controller_name}"
+nsxsd = "#{endpoint}.xsd"
+service = "#{name}Service"
+namespace = "#{endpoint}/#{service}" 
+verbs = %w{ GET }
+%>
+
+<definitions
+  name="<%= service %>"
+  targetNamespace="<%= namespace %>"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:tns="<%= namespace %>"
+  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+  xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+  xmlns:nsxsd="<%= nsxsd %>">
+
+  <types>
+    <xsd:schema>
+      <xsd:import
+        namespace="<%= nsxsd %>"
+        schemaLocation="<%= xsd %>"/>
+    </xsd:schema>
+  </types>
+  
+  <!--
+    GET <%= controller_name %>/
+  -->
+  
+  <message name="<%= "Index#{name}Request" %>">
+    <part name="empty" type="<%="xsd:string"%>"/>
+  </message>
+
+  <message name="<%= "Index#{name}Response" %>">
+    <part name="<%= controller_name %>" type="nsxsd:<%= controller_name %>"/>
+  </message>
+  
+  <portType name="<%= "#{service}IndexPortType"%>">
+    <operation name="IndexOperation">
+      <input name="input" message="<%= "tns:Index#{name}Request"%>"/>
+      <output name="output" message="<%="tns:Index#{name}Response"%>"/>
+    </operation>
+  </portType>
+
+  <binding
+    name="<%= "#{service}IndexBinding" %>"
+    type="<%= "tns:#{service}IndexPortType" %>">
+
+    <http:binding verb="GET"/>
+    <operation name="IndexOperation">
+      <http:operation location="/"/>
+      <input name="input">
+        <http:urlReplacement/>
+      </input>
+      <output name="output">
+        <mime:content part="<%= controller_name %>" type="text/xml"/>
+      </output>
+    </operation>
+  </binding>
+
+  <% verbs.each do |verb| %>
+  <!--
+    <%= verb %>  <%= controller_name %>/:id
+  -->
+
+  <message name="<%= "#{verb.capitalize}#{name}Request" %>">
+    <% if verb == 'GET' || verb == 'DELETE' %>
+    <part name="id" type="xsd:integer"/>
+    <% elsif verb == 'PUT' || verb == 'POST' %>
+    <part name="<%= name.downcase %>" type="<%="nsxsd:#{name.downcase}"%>"/>
+    <% end %>
+  </message>
+
+  <message name="<%= "#{verb.capitalize}#{name}Response" %>">
+    <% if verb == 'GET' || verb == 'DELETE' %>
+    <part name="<%= name.downcase %>" type="<%="nsxsd:#{name.downcase}"%>"/>
+    <% elsif verb == 'PUT' || verb == 'POST' %>
+    <part name="success %>" type="<%="xsd:boolean"%>"/>
+    <% end %>
+  </message>
+
+  <portType name="<%= "#{service}#{verb.capitalize}PortType"%>">
+    <operation name="<%= verb.capitalize %>Operation">
+      <input name="input" message="<%= "tns:#{verb.capitalize}#{name}Request"%>"/>
+      <output name="output" message="<%="tns:#{verb.capitalize}#{name}Response"%>"/>
+    </operation>
+  </portType>
+
+  <binding
+    name="<%= "#{service}#{verb.capitalize}Binding" %>"
+    type="<%= "tns:#{service}#{verb.capitalize}PortType" %>">
+
+    <http:binding verb="<%= verb %>"/>
+    <operation name="<%= verb.capitalize %>Operation">
+      <http:operation location="{id}.xml"/>
+      <input name="input">
+      <% if verb == 'GET' || verb == 'DELETE' %>
+        <http:urlReplacement/>
+      <% elsif verb == 'PUT' || verb == 'POST' %>
+        <mime:content type="application/x-www-form-urlencoded"/> 
+      <% end %>
+      </input>
+      <output name="output">
+        <mime:content part="<%= name.downcase %>" type="text/xml"/>
+      </output>
+    </operation>
+  </binding>
+  <% end %>
+
+  <service name="<%= service %>">
+    <!-- index -->
+    <port
+      name="<%= "#{service}IndexPort" %>"
+      binding="<%= "tns:#{service}IndexBinding" %>">
+      <http:address location="<%= endpoint %>.xml"/>
+    </port>
+  <% verbs.each do |verb| %>
+    
+    <!-- <%= verb.downcase %>  -->
+    <port
+      name="<%= "#{service}#{verb.capitalize}Port" %>"
+      binding="<%= "tns:#{service}#{verb.capitalize}Binding" %>">
+      <http:address location="<%= endpoint %>"/>
+    </port>
+  <% end %>
+  </service>
+  
+  <plnk:partnerLinkType name="<%= "#{service}IndexPartnerLinkType" %>">
+    <plnk:role
+      name="<%= "#{service}IndexRole" %>"
+      portType="<%= "tns:#{service}IndexPortType" %>"/>
+  </plnk:partnerLinkType>  
+  <% verbs.each do |verb| %>
+    
+  <plnk:partnerLinkType name="<%= "#{service}#{verb.capitalize}PartnerLinkType" %>">
+    <plnk:role
+      name="<%= "#{service}#{verb.capitalize}Role" %>"
+      portType="<%= "tns:#{service}#{verb.capitalize}PortType" %>"/>
+  </plnk:partnerLinkType>
+  <% end %>
+
+</definitions>

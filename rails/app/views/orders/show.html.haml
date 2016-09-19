@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Branch:
+  = @order.branch
+%p
+  %b Customer:
+  = @order.customer
+%p
+  %b Cost:
+  = @order.cost
+%p
+  %b Status:
+  = @order.status
+
+= link_to 'Edit', edit_order_path(@order)
+\|
+= link_to 'Back', orders_path

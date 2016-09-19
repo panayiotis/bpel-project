@@ -1,0 +1,22 @@
+= form_for @financial_event do |f|
+  - if @financial_event.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@financial_event.errors.count, "error")} prohibited this financial_event from being saved:"
+      %ul
+        - @financial_event.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :branch
+    = f.text_field :branch
+  .field
+    = f.label :customer
+    = f.text_field :customer
+  .field
+    = f.label :type
+    = f.text_field :type
+  .field
+    = f.label :amount
+    = f.text_field :amount
+  .actions
+    = f.submit 'Save'

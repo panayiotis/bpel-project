@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<%
+controller_name = controller.controller_name
+endpoint = "#{request.protocol}#{request.host_with_port}/#{controller.controller_name}"
+namespace = "#{endpoint}.xsd" 
+%>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified"
+  targetNamespace="<%= namespace %>"
+  xmlns:tns="<%= namespace %>">
+
+  <xs:complexType name="<%= controller_name.classify.downcase %>">
+    <xs:sequence>
+      <xs:element name="id" type="xs:int"></xs:element>
+      <xs:element name="from" type="xs:string"></xs:element>
+      <xs:element name="to" type="xs:string"></xs:element>
+      <xs:element name="order_items">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="order_item" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="price" type="xs:decimal"></xs:element>
+                  <xs:element name="quantity" type="xs:int"></xs:element>
+                  <xs:element name="name" type="xs:string"></xs:element>
+                  <xs:element name="preparation_time" type="xs:int"></xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="<%= controller_name %>">
+    <xs:sequence>
+      <xs:element
+        name="branch"
+        maxOccurs="unbounded"
+        minOccurs="0"
+        type="tns:<%= controller_name.classify.downcase %>">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

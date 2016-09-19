@@ -1,0 +1,15 @@
+# http://rsync.samba.org/ftp/rsync/rsync.html
+
+# Dont send but don't delete on receiver
+- /db/production.sqlite3
+- /tmp/*
+- /log/*
+- /public/assets/*  # precompiling happens locally
+
+# Dont send and delete them on receiver
+hide /.git/
+hide *~
+#hide /test/
+#hide /spec/
+hide .gems.tags
+hide .tags

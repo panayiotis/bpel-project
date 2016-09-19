@@ -1,0 +1,60 @@
+               Prefix Verb   URI Pattern                            Controller#Action
+       static_landing GET    /static/landing(.:format)              static#landing
+         static_graph GET    /static/graph(.:format)                static#graph
+     financial_events GET    /financial_events(.:format)            financial_events#index
+                      POST   /financial_events(.:format)            financial_events#create
+  new_financial_event GET    /financial_events/new(.:format)        financial_events#new
+ edit_financial_event GET    /financial_events/:id/edit(.:format)   financial_events#edit
+      financial_event GET    /financial_events/:id(.:format)        financial_events#show
+                      PATCH  /financial_events/:id(.:format)        financial_events#update
+                      PUT    /financial_events/:id(.:format)        financial_events#update
+                      DELETE /financial_events/:id(.:format)        financial_events#destroy
+             branches GET    /branches(.:format)                    branches#index
+                      POST   /branches(.:format)                    branches#create
+           new_branch GET    /branches/new(.:format)                branches#new
+          edit_branch GET    /branches/:id/edit(.:format)           branches#edit
+               branch GET    /branches/:id(.:format)                branches#show
+                      PATCH  /branches/:id(.:format)                branches#update
+                      PUT    /branches/:id(.:format)                branches#update
+                      DELETE /branches/:id(.:format)                branches#destroy
+          order_items GET    /order_items(.:format)                 order_items#index
+                      POST   /order_items(.:format)                 order_items#create
+       new_order_item GET    /order_items/new(.:format)             order_items#new
+      edit_order_item GET    /order_items/:id/edit(.:format)        order_items#edit
+           order_item GET    /order_items/:id(.:format)             order_items#show
+                      PATCH  /order_items/:id(.:format)             order_items#update
+                      PUT    /order_items/:id(.:format)             order_items#update
+                      DELETE /order_items/:id(.:format)             order_items#destroy
+               orders GET    /orders(.:format)                      orders#index
+                      POST   /orders(.:format)                      orders#create
+            new_order GET    /orders/new(.:format)                  orders#new
+           edit_order GET    /orders/:id/edit(.:format)             orders#edit
+                order GET    /orders/:id(.:format)                  orders#show
+                      PATCH  /orders/:id(.:format)                  orders#update
+                      PUT    /orders/:id(.:format)                  orders#update
+                      DELETE /orders/:id(.:format)                  orders#destroy
+            customers GET    /customers(.:format)                   customers#index
+                      POST   /customers(.:format)                   customers#create
+         new_customer GET    /customers/new(.:format)               customers#new
+        edit_customer GET    /customers/:id/edit(.:format)          customers#edit
+             customer GET    /customers/:id(.:format)               customers#show
+                      PATCH  /customers/:id(.:format)               customers#update
+                      PUT    /customers/:id(.:format)               customers#update
+                      DELETE /customers/:id(.:format)               customers#destroy
+             products GET    /products(.:format)                    products#index
+                      POST   /products(.:format)                    products#create
+          new_product GET    /products/new(.:format)                products#new
+         edit_product GET    /products/:id/edit(.:format)           products#edit
+              product GET    /products/:id(.:format)                products#show
+                      PATCH  /products/:id(.:format)                products#update
+                      PUT    /products/:id(.:format)                products#update
+                      DELETE /products/:id(.:format)                products#destroy
+   product_categories GET    /product_categories(.:format)          product_categories#index
+                      POST   /product_categories(.:format)          product_categories#create
+ new_product_category GET    /product_categories/new(.:format)      product_categories#new
+edit_product_category GET    /product_categories/:id/edit(.:format) product_categories#edit
+     product_category GET    /product_categories/:id(.:format)      product_categories#show
+                      PATCH  /product_categories/:id(.:format)      product_categories#update
+                      PUT    /product_categories/:id(.:format)      product_categories#update
+                      DELETE /product_categories/:id(.:format)      product_categories#destroy
+                 root GET    /                                      static#landing

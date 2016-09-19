@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions
+  name="OrderService"
+  targetNamespace="http://localhost:3000/orders/OrderService"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:tns="http://localhost:3000/orders/OrderService"
+  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+  xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+  xmlns:nsxsd="http://localhost:3000/orders.xsd">
+
+  <types>
+    <xsd:schema>
+      <xsd:import
+        namespace="http://localhost:3000/orders.xsd"
+        schemaLocation="orders.xsd"/>
+    </xsd:schema>
+  </types>
+  
+  <!--
+    GET orders/
+  -->
+  
+  <message name="IndexOrderRequest">
+    <part name="empty" type="xsd:string"/>
+  </message>
+
+  <message name="IndexOrderResponse">
+    <part name="orders" type="nsxsd:orders"/>
+  </message>
+  
+  <portType name="OrderServiceIndexPortType">
+    <operation name="IndexOperation">
+      <input name="input" message="tns:IndexOrderRequest"/>
+      <output name="output" message="tns:IndexOrderResponse"/>
+    </operation>
+  </portType>
+
+  <binding
+    name="OrderServiceIndexBinding"
+    type="tns:OrderServiceIndexPortType">
+
+    <http:binding verb="GET"/>
+    <operation name="IndexOperation">
+      <http:operation location="/"/>
+      <input name="input">
+        <http:urlReplacement/>
+      </input>
+      <output name="output">
+        <mime:content part="orders" type="text/xml"/>
+      </output>
+    </operation>
+  </binding>
+
+  <!--
+    GET  orders/:id
+  -->
+
+  <message name="GetOrderRequest">
+    <part name="id" type="xsd:integer"/>
+  </message>
+
+  <message name="GetOrderResponse">
+    <part name="order" type="nsxsd:order"/>
+  </message>
+
+  <portType name="OrderServiceGetPortType">
+    <operation name="GetOperation">
+      <input name="input" message="tns:GetOrderRequest"/>
+      <output name="output" message="tns:GetOrderResponse"/>
+    </operation>
+  </portType>
+
+  <binding
+    name="OrderServiceGetBinding"
+    type="tns:OrderServiceGetPortType">
+
+    <http:binding verb="GET"/>
+    <operation name="GetOperation">
+      <http:operation location="{id}.xml"/>
+      <input name="input">
+        <http:urlReplacement/>
+      </input>
+      <output name="output">
+        <mime:content part="order" type="text/xml"/>
+      </output>
+    </operation>
+  </binding>
+
+  <service name="OrderService">
+    <!-- index -->
+    <port
+      name="OrderServiceIndexPort"
+      binding="tns:OrderServiceIndexBinding">
+      <http:address location="http://localhost:3000/orders.xml"/>
+    </port>
+    
+    <!-- get  -->
+    <port
+      name="OrderServiceGetPort"
+      binding="tns:OrderServiceGetBinding">
+      <http:address location="http://localhost:3000/orders"/>
+    </port>
+  </service>
+  
+  <plnk:partnerLinkType name="OrderServiceIndexPartnerLinkType">
+    <plnk:role
+      name="OrderServiceIndexRole"
+      portType="tns:OrderServiceIndexPortType"/>
+  </plnk:partnerLinkType>  
+    
+  <plnk:partnerLinkType name="OrderServiceGetPartnerLinkType">
+    <plnk:role
+      name="OrderServiceGetRole"
+      portType="tns:OrderServiceGetPortType"/>
+  </plnk:partnerLinkType>
+
+</definitions>

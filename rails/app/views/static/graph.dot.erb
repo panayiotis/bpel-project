@@ -1,0 +1,33 @@
+/* 
+wget -O tmp/graph.dot http://localhost:3000/static/graph.dot && \
+dot -Tsvg tmp/graph.dot > app/assets/images/graph.svg
+
+*/
+
+digraph models_diagram{
+graph[rankdir=LR, overlap=false, splines=true ];
+node [shape=record, fontsize=12, fontname="Verdana"];
+edge [weight=1, style=dashed];
+
+<% %w(branches customers financial_events order_items orders product_categories products).each do |table| %>
+
+<%= table %> [shape=none, margin=0, label=<
+  <table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr>  <td bgcolor="lightblue"> <%=table.titleize%> </td>  </tr>
+    <% table.singularize.classify.constantize.attribute_names.each do |attr| %>
+    <tr>  <td port="<%= attr %>" align="left"><%= attr %> </td>  </tr>
+    <% end %>
+  </table>
+>]
+
+<% end %>
+
+products:category_id         -> product_categories:id;
+order_items:order_id         -> orders:id;
+order_items:product_id       -> products:id;
+orders:branch_id             -> branches:id;
+financial_events:branch_id   -> branches:id;
+financial_events:customer_id -> customers:id;
+orders:customer_id           -> customers:id;
+
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified"
+  targetNamespace="http://localhost:3000/branches.xsd"
+  xmlns:tns="http://localhost:3000/branches.xsd">
+
+  <xs:complexType name="branch">
+    <xs:sequence>
+      <xs:element type="xs:int" name="id"/>
+      <xs:element type="xs:string" name="address"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="branches">
+    <xs:sequence>
+      <xs:element
+        name="branch"
+        maxOccurs="unbounded"
+        minOccurs="0"
+        type="tns:branch">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

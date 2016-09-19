@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified"
+  targetNamespace="http://localhost:3000/orders.xsd"
+  xmlns:tns="http://localhost:3000/orders.xsd">
+
+  <xs:complexType name="order">
+    <xs:sequence>
+      <xs:element name="id" type="xs:int"></xs:element>
+      <xs:element name="from" type="xs:string"></xs:element>
+      <xs:element name="to" type="xs:string"></xs:element>
+      <xs:element name="order_items">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="order_item" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="price" type="xs:decimal"></xs:element>
+                  <xs:element name="quantity" type="xs:int"></xs:element>
+                  <xs:element name="name" type="xs:string"></xs:element>
+                  <xs:element name="preparation_time" type="xs:int"></xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="orders">
+    <xs:sequence>
+      <xs:element
+        name="branch"
+        maxOccurs="unbounded"
+        minOccurs="0"
+        type="tns:order">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

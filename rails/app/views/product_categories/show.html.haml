@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @product_category.name
+%p
+  %b Description:
+  = @product_category.description
+
+= link_to 'Edit', edit_product_category_path(@product_category)
+\|
+= link_to 'Back', product_categories_path
